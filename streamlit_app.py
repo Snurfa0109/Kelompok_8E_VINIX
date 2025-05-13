@@ -4,6 +4,17 @@ import pandas as pd
 # Load data
 df = pd.read_csv("Data_Insight_5_Streamlit_Ready.csv")
 
+# Bersihkan dan ubah kolom UKT ke numerik
+df['UKT (Gol 1 - Max)'] = (
+    df['UKT (Gol 1 - Max)']
+    .astype(str)
+    .str.replace(r"[^\d]", "", regex=True)  # Hapus semua karakter non-digit
+    .astype(float)
+)
+
+# Pastikan kolom UKT bertipe numerik
+df['UKT (Gol 1 - Max)'] = pd.to_numeric(df['UKT (Gol 1 - Max)'], errors='coerce')
+
 st.title("📊 Dashboard Analisis Daya Tampung Jalur Mandiri PTN - Kelompok 8E")
 st.markdown("""
 <div style="
@@ -34,7 +45,10 @@ col1, col2, col3, col4 = st.columns(4)
 col1.metric("Jumlah Program Studi", df['Program Studi'].nunique())
 col2.metric("Jumlah PTN", df['Nama Universitas'].nunique())
 col3.metric("Total Daya Tampung 2025", int(df['Daya Tampung'].sum()))
-col4.metric("UKT Maksimum (Tertinggi)","Rp{int(df['UKT (Gol 1 - Max)'].max()):,}".replace(",", "."))
+col4.metric(
+    "UKT Maksimum (Tertinggi)",
+    f"Rp{int(df['UKT (Gol 1 - Max)'].max()):,}".replace(",", ".")
+)
 
 # Filter Provinsi & Universitas
 st.markdown("### 🎛️ Filter Data")
