@@ -4,6 +4,11 @@ import pandas as pd
 # Load data
 df = pd.read_csv("Data_Insight_5_Streamlit_Ready.csv")
 
+# Pisahkan UKT (Gol 1 - Max) jadi dua kolom numerik
+ukt_split = df['UKT (Gol 1 - Max)'].str.replace(".", "", regex=False).str.split(" - ", expand=True)
+df['UKT_Gol1'] = pd.to_numeric(ukt_split[0], errors='coerce')
+df['UKT_Max'] = pd.to_numeric(ukt_split[1], errors='coerce')
+
 # Bersihkan dan ubah kolom UKT ke numerik
 df['UKT (Gol 1 - Max)'] = (
     df['UKT (Gol 1 - Max)']
@@ -14,6 +19,7 @@ df['UKT (Gol 1 - Max)'] = (
 
 # Pastikan kolom UKT bertipe numerik
 df['UKT (Gol 1 - Max)'] = pd.to_numeric(df['UKT (Gol 1 - Max)'], errors='coerce')
+
 
 st.title("📊 Dashboard Analisis Daya Tampung Jalur Mandiri PTN - Kelompok 8E")
 st.markdown("""
@@ -40,15 +46,28 @@ st.markdown("""
 
 # Statistik Umum
 st.markdown("### 📊 Statistik Umum")
-col1, col2, col3, col4 = st.columns(4)
 
+# Konversi ke numerik untuk kolom UKT
+df['UKT (Gol 1 - Max)'] = pd.to_numeric(df['UKT (Gol 1 - Max)'], errors='coerce')
+
+# Ambil nilai maksimum UKT dari kolom UKT_Max
+max_ukt = df['UKT_Max'].max()
+
+col1, col2, col3, col4 = st.columns(4)
 col1.metric("Jumlah Program Studi", df['Program Studi'].nunique())
 col2.metric("Jumlah PTN", df['Nama Universitas'].nunique())
 col3.metric("Total Daya Tampung 2025", int(df['Daya Tampung'].sum()))
-col4.metric(
-    "UKT Maksimum (Tertinggi)",
-    f"Rp{int(df['UKT (Gol 1 - Max)'].max()):,}".replace(",", ".")
-)
+col4.metric("UKT Maksimum (Tertinggi)", f"Rp{max_ukt:,.0f}".replace(",", "."))
+
+# Baris dengan UKT tertinggi
+ukt_max_row = df[df['UKT_Max'] == max_ukt]
+ukt_max_row_display = ukt_max_row[['Nama Universitas', 'Program Studi']].copy()
+ukt_max_row_display['UKT (Gol 1 - Max)'] = ukt_max_row['UKT_Gol1'].fillna(0).astype(int).map(lambda x: f"Rp{x:,}".replace(",", ".")) + " - Rp" + ukt_max_row['UKT_Max'].fillna(0).astype(int).map(lambda x: f"{x:,}".replace(",", "."))
+st.dataframe(ukt_max_row_display)
+
+st.markdown("### 🏫 Jurusan dengan UKT Tertinggi")
+st.write("Berikut jurusan dengan UKT maksimum tertinggi di jalur mandiri:")
+st.dataframe(ukt_max_row[['Nama Universitas', 'Program Studi', 'UKT (Gol 1 - Max)']])
 
 # Filter Provinsi & Universitas
 st.markdown("### 🎛️ Filter Data")
