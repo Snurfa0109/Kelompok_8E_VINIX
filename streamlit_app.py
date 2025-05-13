@@ -5,22 +5,27 @@ import pandas as pd
 df = pd.read_csv("Data_Insight_5_Streamlit_Ready.csv")
 
 st.title("📊 Dashboard Analisis Daya Tampung Jalur Mandiri PTN - Kelompok 8E")
-# Judul dan Deskripsi Insight
 st.markdown("""
-### 📌 Insight 5: Jalur Mandiri PTN – Daya Tampung dan UKT Tertinggi per Jurusan
-
-Banyak calon mahasiswa mengikuti jalur mandiri di Perguruan Tinggi Negeri (PTN) karena fleksibilitasnya.  
-Dashboard ini menampilkan daya tampung dan kisaran UKT pada jalur mandiri di berbagai jurusan PTN tahun 2025/2026.
-
----
-
-**Disusun oleh Tim:**  
-Kelompok 8E – Universitas Sultan Ageng Tirtayasa  
-- Shalfa Salsabilla (462)  
-- Siti Nurfadiyah (463)  
-- Syaeful Rachman (464)  
-- Vio Reza Fahlevi (465)
-""")
+<div style="
+    background-color:rgba(108, 99, 255, 0.1); 
+    padding:20px; 
+    border-radius:10px; 
+    border-left:6px solid #6c63ff;
+">
+    <h4>📌 Insight 5: Jalur Mandiri PTN – Daya Tampung dan UKT Tertinggi per Jurusan</h4>
+    <p>
+    Banyak calon mahasiswa mengikuti jalur mandiri di Perguruan Tinggi Negeri (PTN) karena fleksibilitasnya. 
+    Dashboard ini menampilkan daya tampung dan kisaran UKT pada jalur mandiri di berbagai jurusan PTN tahun 2025/2026.
+    </p>
+    <hr style="border-top: 1px dashed #bbb;">
+    <b>Disusun oleh Tim:</b><br>
+    Kelompok 8E – Universitas Sultan Ageng Tirtayasa<br>
+    - Shalfa Salsabilla (462)<br>
+    - Siti Nurfadiyah (463)<br>
+    - Syaeful Rachman (464)<br>
+    - Vio Reza Fahlevi (465)
+</div>
+""", unsafe_allow_html=True)
 
 # Statistik Umum
 st.markdown("### 📊 Statistik Umum")
