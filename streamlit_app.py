@@ -59,7 +59,7 @@ col2.metric("Jumlah PTN", df['Nama Universitas'].nunique())
 col3.metric("Total Daya Tampung 2025", int(df['Daya Tampung'].sum()))
 col4.metric("UKT Maksimum (Tertinggi)", f"Rp{max_ukt:,.0f}".replace(",", "."))
 
-# Baris dengan UKT tertinggi
+# Universitas dengan UKT tertinggi
 ukt_max_row = df[df['UKT_Max'] == max_ukt]
 ukt_max_row_display = ukt_max_row[['Nama Universitas', 'Program Studi']].copy()
 ukt_max_row_display['UKT (Gol 1 - Max)'] = ukt_max_row['UKT_Gol1'].fillna(0).astype(int).map(lambda x: f"Rp{x:,}".replace(",", ".")) + " - Rp" + ukt_max_row['UKT_Max'].fillna(0).astype(int).map(lambda x: f"{x:,}".replace(",", "."))
