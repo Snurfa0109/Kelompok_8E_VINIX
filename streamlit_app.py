@@ -82,12 +82,30 @@ ukt_max_row_display['UKT (Gol 1 - Max)'] = ukt_max_row.apply(
 )
 st.dataframe(ukt_max_row_display)
 
+# Tambahkan state untuk reset filter
+if 'reset_filter' not in st.session_state:
+    st.session_state.reset_filter = False
+
 # Filter Provinsi & Universitas
 st.markdown("### 🎛️ Filter Data")
-provinsi = st.selectbox("Pilih Provinsi", sorted(df['Provinsi'].unique()))
-filtered_df = df[df['Provinsi'] == provinsi]
-universitas = st.selectbox("Pilih Universitas", sorted(filtered_df['Nama Universitas'].unique()))
-final_df = filtered_df[filtered_df['Nama Universitas'] == universitas]
+
+# Tombol Clear Selection
+if st.button("🔄 Clear Selection"):
+    st.session_state.reset_filter = True
+else:
+    st.session_state.reset_filter = False
+
+# Pilih Provinsi dan Universitas (dengan state reset)
+if st.session_state.reset_filter:
+    provinsi = st.selectbox("Pilih Provinsi", sorted(df['Provinsi'].unique()), index=0, key="prov_select")
+    universitas = st.selectbox("Pilih Universitas", sorted(df[df['Provinsi'] == provinsi]['Nama Universitas'].unique()), index=0, key="univ_select")
+else:
+    provinsi = st.selectbox("Pilih Provinsi", sorted(df['Provinsi'].unique()), key="prov_select")
+    filtered_df = df[df['Provinsi'] == provinsi]
+    universitas = st.selectbox("Pilih Universitas", sorted(filtered_df['Nama Universitas'].unique()), key="univ_select")
+
+# Filter akhir
+final_df = df[(df['Provinsi'] == provinsi) & (df['Nama Universitas'] == universitas)]
 
 # Tabel Program Studi
 st.markdown("### 📋 Tabel Program Studi")
