@@ -1,8 +1,16 @@
 import streamlit as st
 import pandas as pd
 
-# Load data
-df = pd.read_csv("Data_Insight_5_Streamlit_Ready.csv")
+# Fungsi cache untuk load data
+@st.cache_data
+def load_data():
+    return pd.read_csv("Data_Insight_5_Streamlit_Ready.csv")
+
+# Tombol clear cache (buat manual refresh)
+if st.button("🔄 Refresh Data (Clear Cache)"):
+    st.cache_data.clear()
+
+df = load_data()
 
 # Pisahkan UKT (Gol 1 - Max) jadi dua kolom numerik
 ukt_split = df['UKT (Gol 1 - Max)'].str.replace(".", "", regex=False).str.split(" - ", expand=True)
