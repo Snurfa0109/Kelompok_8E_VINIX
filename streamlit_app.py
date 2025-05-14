@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt  # <== Ini penting!
+import matplotlib.pyplot as plt 
 import textwrap
 import pydeck as pdk
 import seaborn as sns
